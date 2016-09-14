@@ -12,7 +12,7 @@
 </head>
 <body ng-app="ngApp" ng-controller="jwtController">
 
-  <header class="row header">
+  <header class="header">
     <h1 id="title"><a ui-sref="home">JWT App</a></h1>
     <button ng-click="signout()"><a href="/">Sign Out</a></button>
     <button ng-click="signin('user')" ng-show="!user">Sign In as User</button>
@@ -23,6 +23,7 @@
   <div class="row row2 check-auth">
     <p>If user is logged in, clicking the link below should display the ui-router directive below. Otherwise, the page will redirect to a specific error.</p>
     <a ui-sref="protected" style="text-decoration: underline;">Protected Route</a>
+    <a ui-sref="public" style="text-decoration: underline;">Public Route</a>
   </div>
 
   <!-- Content is injected here -->

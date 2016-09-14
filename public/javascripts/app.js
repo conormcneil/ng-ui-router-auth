@@ -9,7 +9,8 @@ app
     $stateProvider
     //  ======================================================================================================================================================================================================
     .state('home', {
-      url: '/'
+      url: '/',
+      templateUrl: '/partials/home.html'
     })
     .state('protected', {
       url: '/protected',
@@ -28,6 +29,11 @@ app
       url: '/signin',
       controller: 'jwtController',
       templateUrl: '/partials/signin.html'
+    })
+    .state('public', {
+      url: '/public',
+      controller: 'jwtController',
+      templateUrl: '/partials/public.html'
     })
   })
 
