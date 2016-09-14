@@ -13,7 +13,7 @@
 <body ng-app="ngApp" ng-controller="jwtController">
 
   <header class="row header">
-    <h1 id="title"><a href="/">JWT App</a></h1>
+    <h1 id="title"><a ui-sref="home">JWT App</a></h1>
     <button ng-click="signout()"><a href="/">Sign Out</a></button>
     <button ng-click="signin('user')" ng-show="!user">Sign In as User</button>
     <button ng-click="signin('admin')" ng-show="!user">Sign In as Admin</button>

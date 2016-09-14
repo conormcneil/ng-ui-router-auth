@@ -98,31 +98,19 @@ app
           // otherwise, retrieve the identity data from the
           // server, update the identity object, and then
           // resolve.
-          //           $http.get('/svc/account/identity',
-          //                     { ignoreErrors: true })
-          //                .success(function(data) {
-          //                    _identity = data;
-          //                    _authenticated = true;
-          //                    deferred.resolve(_identity);
-          //                })
-          //                .error(function () {
-          //                    _identity = null;
-          //                    _authenticated = false;
-          //                    deferred.resolve(_identity);
-          //                });
-
-          // for the sake of the demo, fake the lookup
-          // by using a timeout to create a valid
-          // fake identity. in reality,  you'll want
-          // something more like the $http request
-          // commented out above. in this example, we fake
-          // looking up to find the user is
-          // not logged in
-          var self = this;
-          $timeout(function() {
-            self.authenticate(null);
-            deferred.resolve(_identity);
-          }, 1000);
+          // $http.get('/svc/account/identity',{ ignoreErrors: true })
+          //   .success(function(data) {
+          //     _identity = data;
+          //      _authenticated = true;
+          //      deferred.resolve(_identity);
+          //    })
+          //    .error(function () {
+          //      _identity = null;
+          //      _authenticated = false;
+          //      deferred.resolve(_identity);
+          //    });
+          this.authenticate(null);
+          deferred.resolve(_identity);
           return deferred.promise;
         }
       };
@@ -165,19 +153,23 @@ app
 
 
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
+
     if($rootScope.returnToState === $state.current.name) {
       delete $rootScope.returnToState;
-      $rooScope.returnToStateParams;
+      delete $rootScope.returnToStateParams;
     }
     // Check authentication & authorization here:
     principal.identity();
     // if user is logged in, set to $scope.user
+
+
     $scope.signin = function(user) {
       var userRole = {user:user}
       console.log(userRole);
       $http.post('/users/signin',userRole).then(function(response) {
         $scope.user = response.data.user;
-        localStorage.user = response.data.user;
+        localStorage.user = JSON.stringify(response.data.user);
+        localStorage.jwt = JSON.stringify(response.data.token);
         principal.authenticate(response.data.user);
         if ($rootScope.returnToState) {
           $state.go($rootScope.returnToState)
@@ -187,10 +179,13 @@ app
     $scope.signout = function() {
       principal.identity(true);
       principal.authenticate(null);
-
-
       delete localStorage.jwt;
       delete localStorage.user;
       delete $scope.user;
+    }
+    if (localStorage.user) {
+      $scope.user = JSON.parse(localStorage.user);
+      // console.log($scope.user);
+      $scope.signin($scope.user.name.toLowerCase());
     }
   }]);

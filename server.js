@@ -12,17 +12,17 @@ app.post('/users/signin',function (req,res,next) {
   console.log(req.body);
   var user = {name: "User"}
   var admin = {name: "Admin",roles: ['admin']}
-  if(req.body.user === 'admin') {
-    res.json({
-      token:jwt.sign(admin,process.env.SECRET),
-      user: admin
-    });
-  } else {
-    res.json({
-      token:jwt.sign(user,process.env.SECRET),
-      user: user
-    });
-  }
+  // if(req.body.user === 'admin') {
+  //   res.json({
+  //     token:jwt.sign(admin,process.env.SECRET),
+  //     user: admin
+  //   });
+  // } else {
+  //   res.json({
+  //     token:jwt.sign(user,process.env.SECRET),
+  //     user: user
+  //   });
+  // }
   res.json({
     token: jwt.sign(user,process.env.SECRET),
     user: user
