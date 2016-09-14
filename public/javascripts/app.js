@@ -29,11 +29,11 @@ app
         controller: 'jwtController',
         templateUrl: '/partials/signin.html'
       })
-      .state('public', {
-        url: '/public',
-        controller: 'jwtController',
-        templateUrl: '/partials/public.html'
-      })
+      // .state('public', {
+      //   url: '/public',
+      //   controller: 'jwtController',
+      //   templateUrl: '/partials/public.html'
+      // })
   })
 
   .service('jwtInterceptor', function jwtInterceptor() {
