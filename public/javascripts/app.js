@@ -10,17 +10,24 @@ app
     // HOME STATES AND NESTED VIEWS ========================================
     .state('home', {
       url: '/',
+      controller: 'jwtController'
     })
     .state('protected', {
       url: '/protected',
+      controller: 'jwtController',
+      data: {
+        roles: ['admin']
+      },
       templateUrl: '/partials/protected.html'
     })
     .state('accessdenied', {
       url: '/accessdenied',
+      controller: 'jwtController',
       templateUrl: '/partials/accessdenied.html'
     })
     .state('signin', {
       url: '/signin',
+      controller: 'jwtController',
       templateUrl: '/partials/signin.html'
     })
   })
@@ -46,7 +53,6 @@ app
       // if the principal is resolved, do an
       // authorization check immediately. otherwise,
       // it'll be done when the state it resolved.
-      console.log(principal.isIdentityResolved());
       if (principal.isIdentityResolved()) authorization.authorize();
       });
     }
@@ -69,13 +75,13 @@ app
           if (!_authenticated || !_identity.roles) return false;
           return _identity.roles.indexOf(role) != -1;
         },
-        isInAnyRole: function(roles) {
-          if (!_authenticated || !_identity.roles) return false;
-          for (var i = 0; i < roles.length; i++) {
-            if (this.isInRole(roles[i])) return true;
-          }
-          return false;
-        },
+        // isInAnyRole: function(roles) {
+        //   if (!_authenticated || !_identity.roles) return false;
+        //   for (var i = 0; i < roles.length; i++) {
+        //     if (this.isInRole(roles[i])) return true;
+        //   }
+        //   return false;
+        // },
         authenticate: function(identity) {
           _identity = identity;
           _authenticated = identity != null;
@@ -129,14 +135,15 @@ app
     function($rootScope, $state, principal) {
       return {
         authorize: function() {
-          console.log('authorize');
           return principal.identity()
             .then(function() {
               var isAuthenticated = principal.isAuthenticated();
-              if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
+              console.log('isAuthenticated',isAuthenticated);
+              console.log($rootScope.toState.data);
+              // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
+              if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
               {
                 if (isAuthenticated) {
-                  console.log('isAuthenticated',isAuthenticated);
                   // user is signed in but not
                   // authorized for desired state
                   $state.go('accessdenied');
@@ -160,7 +167,15 @@ app
 
 
 
-  .controller('jwtController',['$scope','$http','principal','authorization','$state',function($scope,$http,principal,authorization,$state) {
+  .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
+    if ($rootScope.toState) {
+      console.log($rootScope.toState.name);
+    }
+    // Check authentication & authorization here:
+    console.log('authorize user in controller');
+    authorization.authorize($scope.user);
+    console.log('isInRole("admin")',principal.isInRole('admin'));
+
     // if user is logged in, set to $scope.user
     $scope.signin = function() {
       console.log('signin');

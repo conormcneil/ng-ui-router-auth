@@ -10,10 +10,12 @@ app.use(express.static('public'));
 
 app.get('/signin',function (req,res,next) {
   console.log('signin route');
+  // var user = {
+  //   name: "Tom"
+  // }
   var user = {
     name: "Conor",
-    cohort: "g[23]",
-    isAdmin: true
+    roles: ['admin']
   }
   res.json({
     token:jwt.sign(user,process.env.SECRET),
@@ -38,12 +40,12 @@ app.use(function (req,res,next) {
   });
 });
 
-app.get('/api',function (req,res,next) {
-  res.send("Accessed Granted!");
-});
-
-app.get('/ipa',function (req,res,next) {
-  res.send("Sierra Nevada IPA for everyone on K C");
-});
+// app.get('/api',function (req,res,next) {
+//   res.send("Accessed Granted!");
+// });
+//
+// app.get('/ipa',function (req,res,next) {
+//   res.send("Sierra Nevada IPA for everyone on K C");
+// });
 
 app.listen(3000);
