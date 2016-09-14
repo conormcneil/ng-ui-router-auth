@@ -21,9 +21,9 @@
   </header>
 
   <div class="row row2 check-auth">
-    <p>If user is logged in, clicking the link below should display the ui-router directive below. Otherwise, the page will redirect to a specific error.</p>
-    <a ui-sref="protected" style="text-decoration: underline;">Protected Route</a>
-    <!-- <a ui-sref="public" style="text-decoration: underline;">Public Route</a> -->
+    <p>If user is logged in and authorized, clicking the link below will display the protected route.</p>
+    <p>Otherwise, the page will redirect to a specific error.</p>
+    <a ui-sref="protected" style="text-decoration: underline; font-variant: small-caps;">Protected Route</a>
   </div>
 
   <!-- Content is injected here -->
