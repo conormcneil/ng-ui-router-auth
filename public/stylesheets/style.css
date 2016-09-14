@@ -3,18 +3,18 @@ a:not(#title), button {
   color: black;
   cursor: pointer;
 }
-
 body {
   margin: 0;
   padding: 0;
   display: flex;
   flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
-
 .header {
+  padding: 5px;
   width: 100vw;
-  /*height: 100px;*/
-  background: darkgrey;
+  background: rgba(244,67,54,1);
   color: white;
   display: flex;
   align-items: center;
@@ -28,20 +28,16 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
-.header div {
-  padding: 5px;
-  background: red;
-}
-
 .row {
-  width: 100%;
+  margin: 15px;
+  padding: 5px;
+  width: 80%;
+  margin-bottom: 0;
 }
-
 .auth-box {
-  width: 100%;
+  margin-top: 0;
   border: 1px solid black;
 }
-
 #username {
   padding-right: 15px;
 }

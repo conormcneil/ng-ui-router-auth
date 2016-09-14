@@ -7,29 +7,33 @@ app
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/');
     $stateProvider
-    //  ======================================================================================================================================================================================================
-    .state('home', {
-      url: '/',
-      controller: 'jwtController'
-    })
-    .state('protected', {
-      url: '/protected',
-      controller: 'jwtController',
-      data: {
-        roles: ['admin']
-      },
-      templateUrl: '/partials/protected.html'
-    })
-    .state('accessdenied', {
-      url: '/accessdenied',
-      controller: 'jwtController',
-      templateUrl: '/partials/accessdenied.html'
-    })
-    .state('signin', {
-      url: '/signin',
-      controller: 'jwtController',
-      templateUrl: '/partials/signin.html'
-    })
+      .state('home', {
+        url: '/',
+        templateUrl: '/partials/home.html'
+      })
+      .state('protected', {
+        url: '/protected',
+        controller: 'jwtController',
+        data: {
+          roles: ['admin']
+        },
+        templateUrl: '/partials/protected.html'
+      })
+      .state('accessdenied', {
+        url: '/accessdenied',
+        controller: 'jwtController',
+        templateUrl: '/partials/accessdenied.html'
+      })
+      .state('signin', {
+        url: '/signin',
+        controller: 'jwtController',
+        templateUrl: '/partials/signin.html'
+      })
+      // .state('public', {
+      //   url: '/public',
+      //   controller: 'jwtController',
+      //   templateUrl: '/partials/public.html'
+      // })
   })
 
   .service('jwtInterceptor', function jwtInterceptor() {
@@ -47,8 +51,10 @@ app
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       // track the state the user wants to go to;
       // authorization service needs this
+
       $rootScope.toState = toState;
       $rootScope.toStateParams = toStateParams;
+
       // if the principal is resolved, do an
       // authorization check immediately. otherwise,
       // it'll be done when the state it resolved.
@@ -88,9 +94,6 @@ app
         identity: function(force) {
           var deferred = $q.defer();
           if (force === true) _identity = undefined;
-          // check and see if we have retrieved the
-          // identity data from the server. if we have,
-          // reuse it by immediately resolving
           if (angular.isDefined(_identity)) {
             deferred.resolve(_identity);
             return deferred.promise;
@@ -126,7 +129,6 @@ app
             .then(function() {
               var isAuthenticated = principal.isAuthenticated();
               if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
-              // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
               {
                 if (isAuthenticated) {
                   // user is signed in but not
@@ -150,11 +152,7 @@ app
     }
   ])
 
-
-
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
-    console.log($state.current.name);
-
     if($rootScope.returnToState && $rootScope.returnToState === $state.current.name) {
       delete $rootScope.returnToState;
       delete $rootScope.returnToStateParams;l
@@ -162,12 +160,8 @@ app
     }
     // Check authentication & authorization here:
     principal.identity();
-    // if user is logged in, set to $scope.user
-
-
     $scope.signin = function(user) {
       var userRole = {user:user}
-      console.log(userRole);
       $http.post('/users/signin',userRole).then(function(response) {
         $scope.user = response.data.user;
         localStorage.user = JSON.stringify(response.data.user);
@@ -184,10 +178,11 @@ app
       delete localStorage.jwt;
       delete localStorage.user;
       delete $scope.user;
+      $state.go('home');
     }
+    // if user is logged in, set to $scope.user
     if (localStorage.user) {
       $scope.user = JSON.parse(localStorage.user);
-      // console.log($scope.user);
       $scope.signin($scope.user.name.toLowerCase());
     }
   }]);
