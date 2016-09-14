@@ -1,6 +1,7 @@
 var app = angular.module("ngApp",['ui.router']);
 
 app
+
   .config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     $httpProvider.interceptors.push('jwtInterceptor');
     $locationProvider.html5Mode(true);
@@ -9,6 +10,11 @@ app
       .state('home', {
         url: '/',
         templateUrl: '/partials/home.html'
+      })
+      .state('public', {
+        url: '/public',
+        controller: 'jwtController',
+        templateUrl: '/partials/public.html'
       })
       .state('protected', {
         url: '/protected',
@@ -28,11 +34,6 @@ app
         controller: 'jwtController',
         templateUrl: '/partials/signin.html'
       })
-      .state('public', {
-        url: '/public',
-        controller: 'jwtController',
-        templateUrl: '/partials/public.html'
-      })
   })
 
   .service('jwtInterceptor', function jwtInterceptor() {
@@ -48,7 +49,7 @@ app
 
   .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', function($rootScope, $state, $stateParams, authorization, principal) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
-      // track the state the user wants to go to;
+      // store the state to which user wanted to go
       $rootScope.toState = toState;
       $rootScope.toStateParams = toStateParams;
       // if the principal is resolved, do an
@@ -59,7 +60,7 @@ app
     }
   ])
 
-  // principal stores user identity
+  // service to store the user's identity
   .factory('principal', ['$q', '$http', '$timeout',
     function($q, $http, $timeout) {
       var _identity = undefined,
@@ -93,8 +94,6 @@ app
             deferred.resolve(_identity);
             return deferred.promise;
           }
-          // otherwise, jwtController sets $scope.user to localStorage.user
-          // if localStorage.user exists
           this.authenticate(null);
           deferred.resolve(_identity);
           return deferred.promise;
@@ -103,9 +102,7 @@ app
     }
   ])
 
-  // Second, you need a service that checks the state the user wants to go to, makes sure they're logged in, and then does a role check.
-  // If they are not authenticated, send them to the signin page.
-  // If they are authenticated, but fail a role check, send them to an access denied page.
+  // service that checks the state the user wants to go to, makes sure they're logged in and then does a role check
   .factory('authorization', ['$rootScope', '$state', 'principal',
     function($rootScope, $state, principal) {
       return {
@@ -115,14 +112,17 @@ app
               var isAuthenticated = principal.isAuthenticated();
               if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
               {
+                console.log($rootScope.toState);
+                console.log("isInAnyRole",principal.isInAnyRole($rootScope.toState.data.roles));
                 if (isAuthenticated) {
                   // user is signed in but not
                   // authorized for desired state
                   $state.go('accessdenied');
                 } else {
                   // user is not authenticated. Stow
-                  // Store the state to which they were navigating
-                  // before sending them to signin state
+                  // the state they wanted before you
+                  // send them to the sign-in state, so
+                  // you can return them when you're done
                   $rootScope.returnToState = $rootScope.toState;
                   $rootScope.returnToStateParams = $rootScope.toStateParams;
                   // now, send them to the signin state
@@ -137,9 +137,10 @@ app
   ])
 
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
-    if($rootScope.returnToState && $rootScope.returnToState.name === $state.current.name) {
+    if($rootScope.returnToState && $rootScope.returnToState === $state.current.name) {
       delete $rootScope.returnToState;
-      delete $rootScope.returnToStateParams;
+      delete $rootScope.returnToStateParams;l
+      console.log('returnTo',$rootScope);
     }
     // Check authentication & authorization here:
     principal.identity();
