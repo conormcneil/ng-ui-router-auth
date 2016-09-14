@@ -35,7 +35,6 @@ app.get('*',function(req, res) {
 
 // JWT Middleware
 app.use(function (req,res,next) {
-  console.log('check auth');
   jwt.verify(req.token, process.env.SECRET,function (err,decoded) {
     if (!err) {
       next();

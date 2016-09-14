@@ -11,11 +11,6 @@ app
         url: '/',
         templateUrl: '/partials/home.html'
       })
-      .state('public', {
-        url: '/public',
-        controller: 'jwtController',
-        templateUrl: '/partials/public.html'
-      })
       .state('protected', {
         url: '/protected',
         controller: 'jwtController',
@@ -112,21 +107,14 @@ app
               var isAuthenticated = principal.isAuthenticated();
               if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
               {
-                console.log($rootScope.toState);
-                console.log("isInAnyRole",principal.isInAnyRole($rootScope.toState.data.roles));
                 if (isAuthenticated) {
                   // user is signed in but not
                   // authorized for desired state
                   $state.go('accessdenied');
                 } else {
-                  // user is not authenticated. Stow
-                  // the state they wanted before you
-                  // send them to the sign-in state, so
-                  // you can return them when you're done
                   $rootScope.returnToState = $rootScope.toState;
                   $rootScope.returnToStateParams = $rootScope.toStateParams;
-                  // now, send them to the signin state
-                  // so they can log in
+                  // send to the signin state
                   $state.go('signin');
                 }
               }
@@ -140,7 +128,6 @@ app
     if($rootScope.returnToState && $rootScope.returnToState === $state.current.name) {
       delete $rootScope.returnToState;
       delete $rootScope.returnToStateParams;l
-      console.log('returnTo',$rootScope);
     }
     // Check authentication & authorization here:
     principal.identity();
