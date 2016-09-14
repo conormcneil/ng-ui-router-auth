@@ -25,3 +25,11 @@ $ echo 'SECRET="your_secret_here"' >> .env
 ```
 
 and replace 'your_secret_here' with your own private secret. In accordance with dotenv, do not share this secret with ANYONE.
+
+To start a server, run
+
+```shell
+$ nodemon
+```
+
+Then navigate browser to: http://localhost:3000/
