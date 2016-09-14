@@ -44,7 +44,6 @@ app
   })
 
   .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', function($rootScope, $state, $stateParams, authorization, principal) {
-    console.log('$rootScope',$rootScope);
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       // track the state the user wants to go to;
       // authorization service needs this
@@ -138,7 +137,6 @@ app
           return principal.identity()
             .then(function() {
               var isAuthenticated = principal.isAuthenticated();
-              console.log('isAuthenticated',isAuthenticated);
               if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
               // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
               {
@@ -167,21 +165,30 @@ app
 
 
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
-    console.log(principal.identity());
+    if($rootScope.returnToState === $state.current.name) {
+      delete $rootScope.returnToState;
+      $rooScope.returnToStateParams;
+    }
     // Check authentication & authorization here:
-    // authorization.authorize($scope.user);
-    console.log('isInRole("admin")',principal.isInRole('admin'));
-
+    principal.identity();
     // if user is logged in, set to $scope.user
-    $scope.signin = function() {
-      $http.get('/signin').then(function(response) {
+    $scope.signin = function(user) {
+      var userRole = {user:user}
+      console.log(userRole);
+      $http.post('/users/signin',userRole).then(function(response) {
         $scope.user = response.data.user;
         localStorage.user = response.data.user;
         principal.authenticate(response.data.user);
-        console.log(principal.identity());
+        if ($rootScope.returnToState) {
+          $state.go($rootScope.returnToState)
+        }
       });
     };
-    $scope.logout = function() {
+    $scope.signout = function() {
+      principal.identity(true);
+      principal.authenticate(null);
+
+
       delete localStorage.jwt;
       delete localStorage.user;
       delete $scope.user;

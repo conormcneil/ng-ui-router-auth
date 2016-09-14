@@ -1,4 +1,4 @@
-a, button {
+a:not(#title), button {
   text-decoration: none;
   color: black;
   cursor: pointer;
@@ -11,6 +11,28 @@ body {
   flex-flow: column;
 }
 
+.header {
+  width: 100vw;
+  /*height: 100px;*/
+  background: darkgrey;
+  color: white;
+  display: flex;
+  align-items: center;
+  flex-flow: row-reverse;
+}
+.header #title a {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+.header div {
+  padding: 5px;
+  background: red;
+}
+
 .row {
   width: 100%;
 }
@@ -21,7 +43,5 @@ body {
 }
 
 #username {
-  position: absolute;
-  top: 20px;
-  left: 250px;
+  padding-right: 15px;
 }

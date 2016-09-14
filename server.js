@@ -8,19 +8,25 @@ var app = express();
 app.use(bearerToken());
 app.use(express.static('public'));
 
-app.get('/signin',function (req,res,next) {
-  console.log('signin route');
-  // var user = {
-  //   name: "Tom"
-  // }
-  var user = {
-    name: "Conor",
-    roles: ['admin']
+app.post('/users/signin',function (req,res,next) {
+  console.log(req.body);
+  var user = {name: "User"}
+  var admin = {name: "Admin",roles: ['admin']}
+  if(req.body.user === 'admin') {
+    res.json({
+      token:jwt.sign(admin,process.env.SECRET),
+      user: admin
+    });
+  } else {
+    res.json({
+      token:jwt.sign(user,process.env.SECRET),
+      user: user
+    });
   }
   res.json({
-    token:jwt.sign(user,process.env.SECRET),
+    token: jwt.sign(user,process.env.SECRET),
     user: user
-  });
+  })
 });
 
 // // redirect from # to remove from URL

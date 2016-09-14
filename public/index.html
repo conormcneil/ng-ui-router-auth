@@ -12,18 +12,17 @@
 </head>
 <body ng-app="ngApp" ng-controller="jwtController">
 
-  <div class="row row1">
-    <h1><a href="/">JWT App</a></h1>
+  <header class="row header">
+    <h1 id="title"><a href="/">JWT App</a></h1>
+    <button ng-click="signout()"><a href="/">Sign Out</a></button>
+    <button ng-click="signin('user')" ng-show="!user">Sign In as User</button>
+    <button ng-click="signin('admin')" ng-show="!user">Sign In as Admin</button>
     <h3 id="username">{{ user.name }}</h3>
-    <button ng-click="signin()">Sign In</button>
-    <button ng-click="logout()"><a href="/">Logout</a></button>
-  </div>
+  </header>
 
   <div class="row row2 check-auth">
     <p>If user is logged in, clicking the link below should display the ui-router directive below. Otherwise, the page will redirect to a specific error.</p>
     <a ui-sref="protected" style="text-decoration: underline;">Protected Route</a>
-    <a ui-sref="accessdenied" style="text-decoration: underline;">Access Denied</a>
-    <a ui-sref="signin" style="text-decoration: underline;">Sign In</a>
   </div>
 
   <!-- Content is injected here -->
