@@ -1,0 +1,27 @@
+a, button {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+}
+
+.row {
+  width: 100%;
+}
+
+.auth-box {
+  width: 100%;
+  border: 1px solid black;
+}
+
+#username {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+}

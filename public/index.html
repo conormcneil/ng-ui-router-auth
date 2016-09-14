@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JWT App</title>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> <!-- Prevent Browser from requesting favicon -->
+  <link rel="stylesheet" href="./stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script> <!-- Angular CDN -->
+  <script src="./javascripts/angular-ui-router.min.js" charset="utf-8"></script> <!-- ui-router -->
+  <script src="./javascripts/app.js" charset="utf-8"></script>
+  <base href="/">
+</head>
+<body ng-app="ngApp" ng-controller="jwtController">
+
+  <div class="row row1">
+    <h1><a href="/">JWT App</a></h1>
+    <h3 id="username">{{ user.name }}</h3>
+    <button ng-click="signin()">Sign In</button>
+    <button ng-click="logout()"><a href="/">Logout</a></button>
+  </div>
+
+  <div class="row row2 check-auth">
+    <p>If user is logged in, clicking the link below should display the ui-router directive below. Otherwise, the page will redirect to a specific error.</p>
+    <a ui-sref="protected" style="text-decoration: underline;">Check if user is authorized</a>
+    <a ui-sref="accessdenied" style="text-decoration: underline;">Access Denied</a>
+    <a ui-sref="signin" style="text-decoration: underline;">Sign In</a>
+  </div>
+
+  <!-- Content is injected here -->
+  <div ui-view class="row row3 auth-box"></div>
+
+</body>
+</html>
