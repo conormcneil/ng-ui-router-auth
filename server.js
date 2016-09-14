@@ -1,38 +1,35 @@
 require('dotenv').config();
 var express = require('express');
 var jwt = require('jsonwebtoken');
+var bodyParser = require('body-parser');
 var bearerToken = require('express-bearer-token');
 
 var app = express();
 
 app.use(bearerToken());
+app.use(bodyParser());
 app.use(express.static('public'));
 
 app.post('/users/signin',function (req,res,next) {
-  console.log(req.body);
   var user = {name: "User"}
   var admin = {name: "Admin",roles: ['admin']}
-  // if(req.body.user === 'admin') {
-  //   res.json({
-  //     token:jwt.sign(admin,process.env.SECRET),
-  //     user: admin
-  //   });
-  // } else {
-  //   res.json({
-  //     token:jwt.sign(user,process.env.SECRET),
-  //     user: user
-  //   });
-  // }
-  res.json({
-    token: jwt.sign(user,process.env.SECRET),
-    user: user
-  })
+  if(req.body.user === 'admin') {
+    res.json({
+      token:jwt.sign(admin,process.env.SECRET),
+      user: admin
+    });
+  } else {
+    res.json({
+      token:jwt.sign(user,process.env.SECRET),
+      user: user
+    });
+  }
 });
 
 // // redirect from # to remove from URL
-// app.get('*',function(req, res) {
-//   res.redirect('/#' + req.originalUrl);
-// });
+app.get('*',function(req, res) {
+  res.redirect('/#' + req.originalUrl);
+});
 
 // JWT Middleware
 app.use(function (req,res,next) {
@@ -45,13 +42,5 @@ app.use(function (req,res,next) {
     }
   });
 });
-
-// app.get('/api',function (req,res,next) {
-//   res.send("Accessed Granted!");
-// });
-//
-// app.get('/ipa',function (req,res,next) {
-//   res.send("Sierra Nevada IPA for everyone on K C");
-// });
 
 app.listen(3000);
