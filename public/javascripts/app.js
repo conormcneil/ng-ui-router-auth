@@ -1,7 +1,6 @@
 var app = angular.module("ngApp",['ui.router']);
 
 app
-
   .config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     $httpProvider.interceptors.push('jwtInterceptor');
     $locationProvider.html5Mode(true);
@@ -29,11 +28,11 @@ app
         controller: 'jwtController',
         templateUrl: '/partials/signin.html'
       })
-      // .state('public', {
-      //   url: '/public',
-      //   controller: 'jwtController',
-      //   templateUrl: '/partials/public.html'
-      // })
+      .state('public', {
+        url: '/public',
+        controller: 'jwtController',
+        templateUrl: '/partials/public.html'
+      })
   })
 
   .service('jwtInterceptor', function jwtInterceptor() {
@@ -50,11 +49,8 @@ app
   .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', function($rootScope, $state, $stateParams, authorization, principal) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       // track the state the user wants to go to;
-      // authorization service needs this
-
       $rootScope.toState = toState;
       $rootScope.toStateParams = toStateParams;
-
       // if the principal is resolved, do an
       // authorization check immediately. otherwise,
       // it'll be done when the state it resolved.
@@ -63,8 +59,7 @@ app
     }
   ])
 
-// I'm in the process of making a nicer demo as well as cleaning up some of these services into a usable module, but here's what I've come up with. This is a complex process to work around some caveats, so hang in there. You'll need to break this down into several pieces.
-// First, you need a service to store the user's identity. I call this principal. It can be checked to see if the user is logged in, and upon request, it can resolve an object that represents the essential information about the user's identity. This can be whatever you need, but the essentials would be a display name, a username, possibly an email, and the roles a user belongs to (if this applies to your app). Principal also has methods to do role checks.
+  // principal stores user identity
   .factory('principal', ['$q', '$http', '$timeout',
     function($q, $http, $timeout) {
       var _identity = undefined,
@@ -98,20 +93,8 @@ app
             deferred.resolve(_identity);
             return deferred.promise;
           }
-          // otherwise, retrieve the identity data from the
-          // server, update the identity object, and then
-          // resolve.
-          // $http.get('/svc/account/identity',{ ignoreErrors: true })
-          //   .success(function(data) {
-          //     _identity = data;
-          //      _authenticated = true;
-          //      deferred.resolve(_identity);
-          //    })
-          //    .error(function () {
-          //      _identity = null;
-          //      _authenticated = false;
-          //      deferred.resolve(_identity);
-          //    });
+          // otherwise, jwtController sets $scope.user to localStorage.user
+          // if localStorage.user exists
           this.authenticate(null);
           deferred.resolve(_identity);
           return deferred.promise;
@@ -120,7 +103,9 @@ app
     }
   ])
 
-  // Second, you need a service that checks the state the user wants to go to, makes sure they're logged in (if necessary; not necessary for signin, password reset, etc.), and then does a role check (if your app needs this). If they are not authenticated, send them to the sign-in page. If they are authenticated, but fail a role check, send them to an access denied page. I call this service authorization.
+  // Second, you need a service that checks the state the user wants to go to, makes sure they're logged in, and then does a role check.
+  // If they are not authenticated, send them to the signin page.
+  // If they are authenticated, but fail a role check, send them to an access denied page.
   .factory('authorization', ['$rootScope', '$state', 'principal',
     function($rootScope, $state, principal) {
       return {
@@ -136,9 +121,8 @@ app
                   $state.go('accessdenied');
                 } else {
                   // user is not authenticated. Stow
-                  // the state they wanted before you
-                  // send them to the sign-in state, so
-                  // you can return them when you're done
+                  // Store the state to which they were navigating
+                  // before sending them to signin state
                   $rootScope.returnToState = $rootScope.toState;
                   $rootScope.returnToStateParams = $rootScope.toStateParams;
                   // now, send them to the signin state
