@@ -3,7 +3,6 @@ a:not(#title), button {
   color: black;
   cursor: pointer;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -12,11 +11,9 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .header {
   padding: 5px;
   width: 100vw;
-  /*height: 100px;*/
   background: darkgrey;
   color: white;
   display: flex;
@@ -31,19 +28,16 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
-
 .row {
   margin: 15px;
   padding: 5px;
   width: 80%;
   margin-bottom: 0;
 }
-
 .auth-box {
   margin-top: 0;
   border: 1px solid black;
 }
-
 #username {
   padding-right: 15px;
 }

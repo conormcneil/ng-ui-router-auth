@@ -7,34 +7,33 @@ app
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/');
     $stateProvider
-    //  ======================================================================================================================================================================================================
-    .state('home', {
-      url: '/',
-      templateUrl: '/partials/home.html'
-    })
-    .state('protected', {
-      url: '/protected',
-      controller: 'jwtController',
-      data: {
-        roles: ['admin']
-      },
-      templateUrl: '/partials/protected.html'
-    })
-    .state('accessdenied', {
-      url: '/accessdenied',
-      controller: 'jwtController',
-      templateUrl: '/partials/accessdenied.html'
-    })
-    .state('signin', {
-      url: '/signin',
-      controller: 'jwtController',
-      templateUrl: '/partials/signin.html'
-    })
-    .state('public', {
-      url: '/public',
-      controller: 'jwtController',
-      templateUrl: '/partials/public.html'
-    })
+      .state('home', {
+        url: '/',
+        templateUrl: '/partials/home.html'
+      })
+      .state('protected', {
+        url: '/protected',
+        controller: 'jwtController',
+        data: {
+          roles: ['admin']
+        },
+        templateUrl: '/partials/protected.html'
+      })
+      .state('accessdenied', {
+        url: '/accessdenied',
+        controller: 'jwtController',
+        templateUrl: '/partials/accessdenied.html'
+      })
+      .state('signin', {
+        url: '/signin',
+        controller: 'jwtController',
+        templateUrl: '/partials/signin.html'
+      })
+      .state('public', {
+        url: '/public',
+        controller: 'jwtController',
+        templateUrl: '/partials/public.html'
+      })
   })
 
   .service('jwtInterceptor', function jwtInterceptor() {
@@ -176,11 +175,11 @@ app
       delete localStorage.jwt;
       delete localStorage.user;
       delete $scope.user;
+      $state.go('home');
     }
     // if user is logged in, set to $scope.user
     if (localStorage.user) {
       $scope.user = JSON.parse(localStorage.user);
-      // console.log($scope.user);
       $scope.signin($scope.user.name.toLowerCase());
     }
   }]);
