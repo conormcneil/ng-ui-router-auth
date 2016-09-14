@@ -15,3 +15,13 @@ To implement this app, fork & clone this repo, then:
 ```shell
 $ npm install
 ```
+
+The app requires a dotfile to store JWT secret. To configure, see <https://www.npmjs.com/package/dotenv>.
+To configure .env:
+
+```shell
+$ touch .env
+$ echo 'SECRET="your_secret_here"'
+```
+
+and replace 'your_secret_here' with your own private secret. In accordance with dotenv, do not share this secret with ANYONE.
