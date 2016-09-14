@@ -21,7 +21,7 @@ To configure .env:
 
 ```shell
 $ touch .env
-$ echo 'SECRET="your_secret_here"'
+$ echo 'SECRET="your_secret_here"' >> .env
 ```
 
 and replace 'your_secret_here' with your own private secret. In accordance with dotenv, do not share this secret with ANYONE.
