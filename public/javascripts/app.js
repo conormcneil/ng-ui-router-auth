@@ -9,8 +9,7 @@ app
     $stateProvider
     //  ======================================================================================================================================================================================================
     .state('home', {
-      url: '/',
-      controller: 'jwtController'
+      url: '/'
     })
     .state('protected', {
       url: '/protected',
@@ -165,7 +164,6 @@ app
 
     $scope.signin = function(user) {
       var userRole = {user:user}
-      console.log(userRole);
       $http.post('/users/signin',userRole).then(function(response) {
         $scope.user = response.data.user;
         localStorage.user = JSON.stringify(response.data.user);
