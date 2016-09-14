@@ -7,7 +7,7 @@ app
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/');
     $stateProvider
-    // HOME STATES AND NESTED VIEWS ========================================
+    //  ======================================================================================================================================================================================================
     .state('home', {
       url: '/',
       controller: 'jwtController'
@@ -75,13 +75,13 @@ app
           if (!_authenticated || !_identity.roles) return false;
           return _identity.roles.indexOf(role) != -1;
         },
-        // isInAnyRole: function(roles) {
-        //   if (!_authenticated || !_identity.roles) return false;
-        //   for (var i = 0; i < roles.length; i++) {
-        //     if (this.isInRole(roles[i])) return true;
-        //   }
-        //   return false;
-        // },
+        isInAnyRole: function(roles) {
+          if (!_authenticated || !_identity.roles) return false;
+          for (var i = 0; i < roles.length; i++) {
+            if (this.isInRole(roles[i])) return true;
+          }
+          return false;
+        },
         authenticate: function(identity) {
           _identity = identity;
           _authenticated = identity != null;
@@ -139,9 +139,8 @@ app
             .then(function() {
               var isAuthenticated = principal.isAuthenticated();
               console.log('isAuthenticated',isAuthenticated);
-              console.log($rootScope.toState.data);
-              // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
-              if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
+              if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
+              // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
               {
                 if (isAuthenticated) {
                   // user is signed in but not
@@ -168,17 +167,13 @@ app
 
 
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
-    if ($rootScope.toState) {
-      console.log($rootScope.toState.name);
-    }
+    console.log(principal.identity());
     // Check authentication & authorization here:
-    console.log('authorize user in controller');
-    authorization.authorize($scope.user);
+    // authorization.authorize($scope.user);
     console.log('isInRole("admin")',principal.isInRole('admin'));
 
     // if user is logged in, set to $scope.user
     $scope.signin = function() {
-      console.log('signin');
       $http.get('/signin').then(function(response) {
         $scope.user = response.data.user;
         localStorage.user = response.data.user;
@@ -187,7 +182,6 @@ app
       });
     };
     $scope.logout = function() {
-      console.log('logout');
       delete localStorage.jwt;
       delete localStorage.user;
       delete $scope.user;
