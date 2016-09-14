@@ -11,8 +11,10 @@ app.use(bodyParser());
 app.use(express.static('public'));
 
 app.post('/users/signin',function (req,res,next) {
-  var user = {name: "User"}
-  var admin = {name: "Admin",roles: ['admin']}
+  // retrieve user from database here
+  // for sake of demo, API retrieves either admin or standard user
+  var user = {name: "User"};
+  var admin = {name: "Admin",roles: ['admin']};
   if(req.body.user === 'admin') {
     res.json({
       token:jwt.sign(admin,process.env.SECRET),
@@ -23,10 +25,10 @@ app.post('/users/signin',function (req,res,next) {
       token:jwt.sign(user,process.env.SECRET),
       user: user
     });
-  }
+  };
 });
 
-// // redirect from # to remove from URL
+// redirect from # to remove from URL
 app.get('*',function(req, res) {
   res.redirect('/#' + req.originalUrl);
 });

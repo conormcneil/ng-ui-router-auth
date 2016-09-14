@@ -3,6 +3,9 @@ a:not(#title), button {
   color: black;
   cursor: pointer;
 }
+.shadow {
+  box-shadow: 1px 1px 3px grey;
+}
 body {
   margin: 0;
   padding: 0;
@@ -14,11 +17,13 @@ body {
 .header {
   padding: 5px;
   width: 100vw;
+  height: 65px;
   background: rgba(244,67,54,1);
   color: white;
   display: flex;
   align-items: center;
   flex-flow: row-reverse;
+  z-index: 1;
 }
 .header #title a {
   position: absolute;

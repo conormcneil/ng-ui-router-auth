@@ -10,9 +10,9 @@
   <script src="./javascripts/app.js" charset="utf-8"></script>
   <base href="/">
 </head>
-<body ng-app="ngApp" ng-controller="jwtController">
+<body ng-app="ngApp">
 
-  <header class="header">
+  <header class="header shadow" ng-controller="jwtController">
     <h1 id="title"><a ui-sref="home">JWT App</a></h1>
     <button ng-click="signout()" ng-show="user"><a href="/">Sign Out</a></button>
     <button ng-click="signin('user')" ng-show="!user">Sign In as User</button>
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Content is injected here -->
-  <div ui-view class="row row3 auth-box"></div>
+  <div ui-view class="row row3 auth-box shadow"></div>
 
 </body>
 </html>
