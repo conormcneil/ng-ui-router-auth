@@ -87,9 +87,6 @@ app
         identity: function(force) {
           var deferred = $q.defer();
           if (force === true) _identity = undefined;
-          // check and see if we have retrieved the
-          // identity data from the server. if we have,
-          // reuse it by immediately resolving
           if (angular.isDefined(_identity)) {
             deferred.resolve(_identity);
             return deferred.promise;
@@ -125,7 +122,6 @@ app
             .then(function() {
               var isAuthenticated = principal.isAuthenticated();
               if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !principal.isInAnyRole($rootScope.toState.data.roles))
-              // if ($rootScope.toState.data && $rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0)
               {
                 if (isAuthenticated) {
                   // user is signed in but not
@@ -149,19 +145,13 @@ app
     }
   ])
 
-
-
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
-
     if($rootScope.returnToState === $state.current.name) {
       delete $rootScope.returnToState;
       delete $rootScope.returnToStateParams;
     }
     // Check authentication & authorization here:
     principal.identity();
-    // if user is logged in, set to $scope.user
-
-
     $scope.signin = function(user) {
       var userRole = {user:user}
       $http.post('/users/signin',userRole).then(function(response) {
@@ -181,6 +171,7 @@ app
       delete localStorage.user;
       delete $scope.user;
     }
+    // if user is logged in, set to $scope.user
     if (localStorage.user) {
       $scope.user = JSON.parse(localStorage.user);
       // console.log($scope.user);
