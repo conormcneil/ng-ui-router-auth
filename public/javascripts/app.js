@@ -127,7 +127,7 @@ app
   .controller('jwtController',['$rootScope','$scope','$http','principal','authorization','$state',function($rootScope,$scope,$http,principal,authorization,$state) {
     if($rootScope.returnToState && $rootScope.returnToState.name === $state.current.name) {
       delete $rootScope.returnToState;
-      delete $rootScope.returnToStateParams;l
+      delete $rootScope.returnToStateParams;
     }
     // Check authentication & authorization here:
     principal.identity();
