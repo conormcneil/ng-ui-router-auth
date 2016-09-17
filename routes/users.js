@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-router.post('/signin',function (req,res,next) {
+router.use('/signin',function (req,res,next) {
   // retrieve user from database here
   // for sake of demo, API retrieves either admin or standard user
   var user = {name: "User"};
