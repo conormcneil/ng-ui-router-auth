@@ -1,32 +1,22 @@
 require('dotenv').config();
 var express = require('express');
-var jwt = require('jsonwebtoken');
+var logger = require('morgan');
 var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 var bearerToken = require('express-bearer-token');
 
 var app = express();
+var users = require('./routes/users');
+var api = require('./routes/api');
 
 app.use(bearerToken());
-app.use(bodyParser());
 app.use(express.static('public'));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/users/signin',function (req,res,next) {
-  // retrieve user from database here
-  // for sake of demo, API retrieves either admin or standard user
-  var user = {name: "User"};
-  var admin = {name: "Admin",roles: ['admin']};
-  if(req.body.user === 'admin') {
-    res.json({
-      token:jwt.sign(admin,process.env.SECRET),
-      user: admin
-    });
-  } else {
-    res.json({
-      token:jwt.sign(user,process.env.SECRET),
-      user: user
-    });
-  };
-});
+app.use('/users', users);
+app.use('/api', api);
 
 // redirect from # to remove from URL
 app.get('*',function(req, res) {
