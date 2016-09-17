@@ -33,7 +33,6 @@ app.use(function(req, res, next) {
     // verifies secret and checks exp
     jwt.verify(token, process.env.SECRET, function(err, data) {
       if (err) {
-        console.log('broken token',token);
         return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         // if everything is good, save to request for use in other routes
