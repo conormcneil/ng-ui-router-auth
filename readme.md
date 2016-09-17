@@ -21,10 +21,10 @@ To configure .env:
 
 ```shell
 $ touch .env
-$ echo 'SECRET="your_secret_here"' >> .env
+$ echo SECRET="your_secret_here" >> .env
 ```
 
-and replace 'your_secret_here' with your own private secret. In accordance with dotenv, do not share this secret with ANYONE.
+and replace 'your_secret_here' with your own private secret.
 
 To start a server, run
 
@@ -33,3 +33,10 @@ $ nodemon
 ```
 
 Then navigate browser to: http://localhost:3000/
+
+#API Endpoints
+
+GET /users/signin - public route - returns dummy user object and signed JWT token
+GET,POST /api/protected - protected route - returns array of dummy user data
+
+The protected route is only accessible if the JWT is included in the request and verified.
