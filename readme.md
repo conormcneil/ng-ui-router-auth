@@ -37,6 +37,7 @@ Then navigate browser to: http://localhost:3000/
 ##API Endpoints
 
 GET /users/signin - public route - returns dummy user object and signed JWT token
+
 GET,POST /api/protected - protected route - returns array of dummy user data
 
 The protected route is only accessible if the JWT is included in the request and verified.
