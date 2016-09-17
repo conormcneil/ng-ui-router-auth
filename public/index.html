@@ -28,7 +28,14 @@
 
   <!-- Content is injected here -->
   <div ui-view class="row row3 auth-box shadow"></div>
-  
+
+  <div class="row row2 check-auth">
+    <p>Click 'Call API' when not logged in:</p>
+    <p>API resopnds "Forbidden"</p>
+    <p>Sign in as either user, then call API again</p>
+    <p>API uses JWT to authorize users and returns array of dummy user data</p>
+  </div>
+
   <div class="row row3 auth-box shadow" ng-controller="jwtController">
     <button ng-click="api.call()">Call API</button>
     <p>{{ message }}</p>
