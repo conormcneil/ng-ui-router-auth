@@ -1,12 +1,12 @@
-## Angular JWT App
+# Angular JWT App
 
-This app is designed to demonstrate route-based authentication & authorization within Angular.js and ui-Router.
+This app is designed to demonstrate route-based authentication & authorization within Angular.js and Node.js using ui-Router.
 
 As a demo, the app consists of two users; an admin and a user.
 
-The user has access to public routes but not 'admin' routes.
+The user has access to public states but not 'admin' states.
 
-The admin has access to all routes.
+The admin has access to all states.
 
 
 
@@ -24,7 +24,7 @@ $ touch .env
 $ echo SECRET="your_secret_here" >> .env
 ```
 
-and replace 'your_secret_here' with your own private secret.
+and replace "your_secret_here" with your own private secret.
 
 To start a server, run
 
@@ -34,7 +34,7 @@ $ nodemon
 
 Then navigate browser to: http://localhost:3000/
 
-#API Endpoints
+##API Endpoints
 
 GET /users/signin - public route - returns dummy user object and signed JWT token
 GET,POST /api/protected - protected route - returns array of dummy user data
