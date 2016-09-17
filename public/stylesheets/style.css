@@ -3,6 +3,12 @@ a:not(#title), button {
   color: black;
   cursor: pointer;
 }
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
 .shadow {
   box-shadow: 1px 1px 3px grey;
 }

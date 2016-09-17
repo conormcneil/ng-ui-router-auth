@@ -11,8 +11,8 @@ app
         url: '/',
         templateUrl: '/partials/home.html'
       })
-      .state('protected', {
-        url: '/protected',
+      .state('protect', {
+        url: '/protect',
         controller: 'jwtController',
         data: {
           roles: ['admin']
@@ -36,6 +36,7 @@ app
       request: function(config) {
         if (localStorage.jwt) {
           config.headers.Authorization = 'Bearer ' + localStorage.jwt;
+          config.headers['x-access-token'] = localStorage.jwt;
         }
         return config;
       }
@@ -156,14 +157,14 @@ app
       $scope.user = JSON.parse(localStorage.user);
       $scope.signin($scope.user.name.toLowerCase());
     }
-    // console.log($state.current.name);
     $scope.api = {};
-    if ($state.current.name === 'protected') {
-      console.log('call protected api route');
-      $http.get('/api/protected',{token:JSON.parse(localStorage.jwt)}).then(function(response) {
-        console.log(response);
-        // $scope.api.message = response;
+    $scope.error = {};
+    $scope.api.call = function() {
+      $http.get('/api/protected',{token:localStorage.jwt}).then(function(data) {
+        $scope.message = data.statusText;
+        $scope.api.users = data.data;
+      }).catch(function(error) {
+        $scope.message = error.statusText;
       })
     }
-
   }]);

@@ -2,35 +2,9 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-// router.use(function(req, res, next) {
-//   console.log(req.body.token);
-//   // JWT API auth here
-//   // check header or url parameters or post parameters for token
-//   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-//   // decode token
-//   if (token) {
-//     // verifies secret and checks exp
-//     jwt.verify(token, process.env.SECRET, function(err, data) {
-//       if (err) {
-//         return res.json({ success: false, message: 'Failed to authenticate token.' });
-//       } else {
-//         // if everything is good, save to request for use in other routes
-//         req.data = data;
-//         next();
-//       }
-//     });
-//   } else {
-//     // if there is no token
-//     // return an error
-//     return res.status(403).send({
-//       success: false,
-//       message: 'No token provided.'
-//     });
-//   }
-// })
-
 router.get('/protected', function(req, res, next) {
-  res.json({data:'mission accomplished!'});
+  console.log('/api/protected route');
+  res.json(['user1','user2','user3']);
 });
 
 module.exports = router;

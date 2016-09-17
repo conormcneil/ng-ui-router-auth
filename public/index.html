@@ -23,11 +23,18 @@
   <div class="row row2 check-auth">
     <p>If user is logged in and authorized, clicking the link below will display the protected route.</p>
     <p>Otherwise, the page will redirect to a specific error.</p>
-    <a ui-sref="protected" style="text-decoration: underline; font-variant: small-caps;" class="route">Protected Route</a>
+    <a ui-sref="protect" style="text-decoration: underline; font-variant: small-caps;" class="route">Protected Route</a>
   </div>
 
   <!-- Content is injected here -->
   <div ui-view class="row row3 auth-box shadow"></div>
+  
+  <div class="row row3 auth-box shadow" ng-controller="jwtController">
+    <button ng-click="api.call()">Call API</button>
+    <p>{{ message }}</p>
+    <h2>Protected Data:</h2>
+    <p ng-repeat="user in api.users">{{ user }}</p>
+  </div>
 
 </body>
 </html>

@@ -17,27 +17,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', users);
 
-// JWT Middleware
-app.use(function (req,res,next) {
-  jwt.verify(req.token, process.env.SECRET,function (err,decoded) {
-    if (!err) {
-      next();
-    } else {
-      res.redirect('/');
-    }
-  });
-});
-
 app.use(function(req, res, next) {
-  console.log(req.body.token);
   // JWT API auth here
   // check header or url parameters or post parameters for token
+  // Lots of different methods to authorize token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   // decode token
   if (token) {
+    if (token.charAt(0) === '"') {
+      token = token.split('');
+      token.splice(0,1);
+      token.splice(token.length-1,1);
+      token = token.join('');
+    }
     // verifies secret and checks exp
     jwt.verify(token, process.env.SECRET, function(err, data) {
       if (err) {
+        console.log('broken token',token);
         return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         // if everything is good, save to request for use in other routes
@@ -54,7 +50,7 @@ app.use(function(req, res, next) {
     });
   }
 })
-
+// List protected routes
 app.use('/api', api);
 
 // redirect from # to remove from URL
