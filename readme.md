@@ -26,7 +26,7 @@ $ echo SECRET="your_secret_here" >> .env
 
 and replace "your_secret_here" with your own private secret.
 
-To start a server, run
+To start a server, navigate to your project's root directory and run:
 
 ```shell
 $ nodemon
