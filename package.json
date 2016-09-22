@@ -12,6 +12,8 @@
     "dotenv": "^2.0.0",
     "express": "~4.13.1",
     "express-bearer-token": "^2.1.0",
-    "jsonwebtoken": "^7.1.9"
-  }
+    "jsonwebtoken": "^7.1.9",
+    "morgan": "^1.7.0"
+  },
+  "repository": "https://github.com/conormcneil/ng-ui-router-auth"
 }
