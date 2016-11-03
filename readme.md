@@ -1,6 +1,6 @@
-# Angular JWT App
+# Angular JSON Web Token (JWT) App
 
-This app is designed to demonstrate route-based authentication & authorization within Angular.js and Node.js using ui-Router.
+This app is designed to demonstrate route-based authentication & authorization using JSON Web Tokens (JWT), Angular.js, Node.js, and ui-Router.
 
 As a demo, the app consists of two users; an admin and a user.
 
@@ -36,8 +36,8 @@ Then navigate browser to: http://localhost:3000/
 
 ##API Endpoints
 
-GET /users/signin - public route - returns dummy user object and signed JWT token
+GET: /users/signin - public route - returns dummy user object and signed JWT token
 
-GET,POST /api/protected - protected route - returns array of dummy user data
+GET, POST: /api/protected - protected route - returns array of dummy user data
 
 The protected route is only accessible if the JWT is included in the request and verified.
